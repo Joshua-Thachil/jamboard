@@ -35,8 +35,7 @@ class EventCard extends StatefulWidget {
 class _EventCardState extends State<EventCard> {
   int _currentIndex = 0;
   Timer? _timer;
-  final Palette palette = Palette();
-
+  
   @override
   void initState() {
     super.initState();
@@ -65,7 +64,7 @@ class _EventCardState extends State<EventCard> {
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: palette.secondary_bg,
+          color: Palette.secondary_bg,
         ),
         child: Column(
           children: [
@@ -202,7 +201,6 @@ class _EventCardState extends State<EventCard> {
 class NotificationCard extends StatelessWidget {
   final String notificationText;
   final String timeSent;
-  final Palette palette = Palette();
 
   NotificationCard({
     required this.notificationText,
@@ -216,7 +214,7 @@ class NotificationCard extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 15),
       padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
       decoration: BoxDecoration(
-        color: palette.secondary_bg,  // Use the background color provided
+        color: Palette.secondary_bg,  // Use the background color provided
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
