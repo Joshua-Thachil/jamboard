@@ -12,6 +12,7 @@ class InputField extends StatelessWidget { // Basic Small Input Text Field
     this.onSubmitted,
     this.onChanged,
     this.obscureText = false,
+    this.bgcolor = const Color(0xff1E1E1E),
   });
 
   final TextEditingController InputController;
@@ -22,6 +23,7 @@ class InputField extends StatelessWidget { // Basic Small Input Text Field
   final Function(String)? onSubmitted;
   final Function(String)? onChanged;
   final bool obscureText;
+  final Color bgcolor;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class InputField extends StatelessWidget { // Basic Small Input Text Field
           fontWeight: FontWeight.w400,
         ),
         filled: true,
-        fillColor: Color(0xff1E1E1E),
+        fillColor: bgcolor,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(15.r)),
           borderSide: BorderSide.none,
