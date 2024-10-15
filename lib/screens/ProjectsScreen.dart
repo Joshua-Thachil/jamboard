@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jamboard/Style/Palette.dart';
 import 'package:jamboard/components/InputFields.dart';
+import 'package:jamboard/repositories/Projects.dart';
+import 'package:jamboard/screens/LyricsScreen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProjectScreen extends StatefulWidget {
   const ProjectScreen({super.key});
@@ -11,19 +14,29 @@ class ProjectScreen extends StatefulWidget {
 
 class _ProjectScreenState extends State<ProjectScreen> {
 
-  final List<String> _projectList = [
-    "Indian OC 1",
-    "Faint",
-    "Strawberry pulp - version 1"
+  bool flag = false;
+  List<String> _projectList = [
+    // "Indian OC 1",
+    // "Faint",
+    // "Strawberry pulp - version 1"
   ]; //the main list of projects for backend
   bool _isSearchActive = false;
+  final TextEditingController _projectnamecontroller = TextEditingController();
   final TextEditingController _searchController = TextEditingController();
   List<String> _filteredProjectList = [];
 
   @override
   void initState() {
+    getProjects();
     super.initState();
-    _filteredProjectList = _projectList; // Initialize the filtered list with the full project list
+  }
+
+  void getProjects() async {
+      _projectList = await Projects.readProject();
+      _filteredProjectList = _projectList;
+      flag = _filteredProjectList.isEmpty;
+      print("PROJECT LISTS: $_filteredProjectList");
+      setState((){});
   }
 
   // Function to filter the project list based on search input
@@ -41,7 +54,6 @@ class _ProjectScreenState extends State<ProjectScreen> {
 
   //function to open a popUp
   Future<void> _showInputDialog(BuildContext context) async {
-    TextEditingController _projectnamecontroller = TextEditingController();
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -87,10 +99,11 @@ class _ProjectScreenState extends State<ProjectScreen> {
                     TextButton(
                       child: Text('Submit', style: TextStyle(color: Colors.white)),
                       onPressed: () {
-                        setState(() {
-                          _projectList.add(_projectnamecontroller.text);
+                        setState(() async {
+                          await Supabase.instance.client.from('Projects').insert({'title' : _projectnamecontroller.text});
+                          getProjects();
+                          Navigator.of(context).pop();
                         });
-                        Navigator.of(context).pop(); // Close the dialog
                       },
                     ),
                   ],
@@ -205,7 +218,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
             const SizedBox(height: 30),
 
             Expanded(
-              child: _filteredProjectList.isEmpty
+              child: flag
               ? const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -240,9 +253,10 @@ class _ProjectScreenState extends State<ProjectScreen> {
                       child: Icon(Icons.delete, color: Colors.white), // Delete icon
                     ),
                     onDismissed: (direction) {
-                      setState(() {
+                      setState(() async {
                         // Remove the project from the original list
                         _projectList.remove(project);
+                        await Supabase.instance.client.from('Projects').delete().eq('title', project);
 
                         // Remove from the filtered list
                         _filteredProjectList.removeAt(index);
@@ -269,6 +283,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
                         ),
                         onPressed: () {
                           // Define your onPressed action here
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => LyricsScreen()));
                         },
                         icon: Icon(
                           Icons.music_note_outlined,

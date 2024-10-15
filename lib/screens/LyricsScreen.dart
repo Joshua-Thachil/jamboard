@@ -28,7 +28,9 @@ class _LyricsScreenState extends State<LyricsScreen> {
             ),
           )),
           leading: IconButton(
-              onPressed: null,
+              onPressed: () {
+                Navigator.pop(context);
+              },
               icon: Icon(
                 Icons.arrow_back,
                 color: Colors.white,
@@ -46,7 +48,7 @@ class _LyricsScreenState extends State<LyricsScreen> {
                   configurations: QuillEditorConfigurations(
                       customStyles: DefaultStyles(
                           paragraph: DefaultTextBlockStyle(
-                              TextStyle(color: Colors.white, fontSize: 17),
+                              TextStyle(color: Colors.white, fontSize: 18),
                               HorizontalSpacing(5, 5),
                               VerticalSpacing(2, 2),
                               VerticalSpacing(1, 1),
@@ -82,7 +84,7 @@ class _LyricsScreenState extends State<LyricsScreen> {
                     showClipboardCut: false,
                     showClipboardPaste: false,
                     showClearFormat: false,
-                    toolbarIconCrossAlignment: WrapCrossAlignment.center
+                    toolbarIconCrossAlignment: WrapCrossAlignment.center,
                   ))
             ],
           ),
