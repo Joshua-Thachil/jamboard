@@ -41,7 +41,34 @@ class _RecordingScreenState extends State<RecordingScreen> {
       setState(() => _amplitude = amp);
     });
 
+
     super.initState();
+  }
+
+
+  bool flag = false;
+  List<String> _projectList = [
+    "Indian OC 1",
+    "Faint",
+    "Strawberry pulp - version 1"
+  ];
+  bool _isSearchActive = false;
+  final TextEditingController _projectnamecontroller = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+  List<String> _filteredProjectList = [];
+
+
+  // Function to filter the project list based on search input
+  void _filterProjects(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        _filteredProjectList = _projectList;
+      } else {
+        _filteredProjectList = _projectList
+            .where((project) => project.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      }
+    });
   }
 
   Future<void> startRecording() async {
@@ -49,6 +76,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
       if (await audioRecorder.hasPermission()) {
         final directory = await getApplicationDocumentsDirectory();
         audioPath = '${directory.path}/myaudio.mp3'; // Valid path
+        print("FILE PATH: $audioPath");
 
         const config = RecordConfig(encoder: AudioEncoder.aacLc, numChannels: 1);
 
@@ -117,37 +145,39 @@ class _RecordingScreenState extends State<RecordingScreen> {
       appBar: AppBar(
         title: const Text("Recording Screen"),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          if (_recordState == RecordState.record)
-            const Text(
-              "Recording...",
-              style: TextStyle(fontSize: 24),
-            ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _recordState != RecordState.stop ? stopRecording : startRecording,
-            child: Text(_recordState != RecordState.stop ? "Stop" : "Record"),
-          ),
-          const SizedBox(height: 20),
-          if (_recordState == RecordState.stop && audioPath.isNotEmpty)
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (_recordState == RecordState.record)
+              const Text(
+                "Recording...",
+                style: TextStyle(fontSize: 24),
+              ),
+            const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: playRecording,
-              child: const Text("Play"),
+              onPressed: _recordState != RecordState.stop ? stopRecording : startRecording,
+              child: Text(_recordState != RecordState.stop ? "Stop" : "Record"),
             ),
-          const SizedBox(height: 40),
-          if (_amplitude != null)
-            Column(
-              children: [
-                Text('Current amplitude: ${_amplitude?.current ?? 0.0}'),
-                Text('Max amplitude: ${_amplitude?.max ?? 0.0}'),
-              ],
-            ),
-          const SizedBox(height: 20),
-          if (_recordState != RecordState.stop) _buildTimer(),
-        ],
+            const SizedBox(height: 20),
+            if (_recordState == RecordState.stop && audioPath.isNotEmpty)
+              ElevatedButton(
+                onPressed: playRecording,
+                child: const Text("Play"),
+              ),
+            const SizedBox(height: 40),
+            if (_amplitude != null)
+              Column(
+                children: [
+                  Text('Current amplitude: ${_amplitude?.current ?? 0.0}'),
+                  Text('Max amplitude: ${_amplitude?.max ?? 0.0}'),
+                ],
+              ),
+            const SizedBox(height: 20),
+            if (_recordState != RecordState.stop) _buildTimer(),
+          ],
+        ),
       ),
     );
   }
