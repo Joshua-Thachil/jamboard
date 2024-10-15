@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jamboard/screens/LandingScreen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'screens/RecordingScreen.dart';
 import 'components/Globals.dart';
 
 void main() async {
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
         ),
-        home: Landingscreen(),
+        home: RecordingScreen(),//home: Landingscreen(),
       );
     },
       designSize: const Size(430, 932),
