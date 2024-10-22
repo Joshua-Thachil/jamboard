@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jamboard/screens/LandingScreen.dart';
+import 'package:jamboard/screens/RecordingScreen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'components/Globals.dart';
