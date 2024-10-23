@@ -3,6 +3,7 @@ import 'package:jamboard/Style/Palette.dart';
 import 'package:jamboard/components/InputFields.dart';
 import 'package:jamboard/repositories/Projects.dart';
 import 'package:jamboard/screens/LyricsScreen.dart';
+import 'package:jamboard/screens/RecordingScreen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProjectScreen extends StatefulWidget {
@@ -283,7 +284,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
                         ),
                         onPressed: () {
                           // Define your onPressed action here
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => LyricsScreen()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => RecordingScreen(projectName: project,)));
                         },
                         icon: Icon(
                           Icons.music_note_outlined,

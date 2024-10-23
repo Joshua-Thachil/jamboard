@@ -3,7 +3,11 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:jamboard/Style/Palette.dart';
 
 class LyricsScreen extends StatefulWidget {
-  const LyricsScreen({super.key});
+  final String projectName;
+  const LyricsScreen({
+    super.key,
+    required this.projectName
+  });
 
   @override
   State<LyricsScreen> createState() => _LyricsScreenState();
@@ -22,7 +26,7 @@ class _LyricsScreenState extends State<LyricsScreen> {
               child: Padding(
             padding: EdgeInsets.only(right: 30),
             child: Text(
-              "Project Name",
+              widget.projectName,
               style:
                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
